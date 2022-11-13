@@ -17,6 +17,12 @@ public class LoginContext : DbContext {
         optionsBuilder.UseSqlServer(@"Server=.\SQL2019EXPRESS;Database=db_speedrun_en;Integrated security=true;");
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="username"></param>
+    /// <returns></returns>
+    /// <exception cref="UserNotFoundException"></exception>
     public UserDTO GetUserByUserName(string username) {
         try {
             return this.Users

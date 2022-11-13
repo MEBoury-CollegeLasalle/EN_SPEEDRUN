@@ -13,29 +13,34 @@ namespace EN_SPEEDRUN.DataAccess.Dtos;
 public class AddressDTO : IDto {
 
     [Key]
-    public int Id { get; set; }
+    public int Id { get; private set; }
 
     [Required]
     public int StreetNumber { get; set; }
 
     [Required]
+    [StringLength(128)]
     public string Street { get; set; }
 
+    [StringLength(32)]
     public string? StreetExtension { get; set; }
 
     [Required]
     public string City { get; set; }
 
     [Required]
+    [StringLength(16)]
     public string PostalCode { get; set; }
 
     [Required]
+    [StringLength(64)]
     public string Region { get; set; }
 
     [Required]
+    [StringLength(64)]
     public string Country { get; set; }
 
     [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-    public DateTime DateCreated { get; set; }
+    public DateTime DateCreated { get; private set; }
 
 }

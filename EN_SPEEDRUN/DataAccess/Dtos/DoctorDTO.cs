@@ -1,4 +1,5 @@
 ﻿using EN_SPEEDRUN.DataAccess.Interfaces;
+using EN_SPEEDRUN.DataAccess.Pivots;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -34,10 +35,16 @@ public class DoctorDTO : IDto {
     public DateTime DateCreated { get; set; }
 
 
+
+    // Navigation Properties
+
     [ForeignKey("StatusId")]
     public StatusDTO Status { get; set; }
 
-    public List<ClinicDTO> Clinics { get; set; }
+    [ForeignKey("ClinicId")]
+    public List<ClinicDoctor> ClinicDoctors { get; set; }
+
+    public List<AppointmentDTO> Appointments { get; set; }
 
 
 }

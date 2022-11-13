@@ -19,12 +19,15 @@ public class PatientDTO : IDto {
     public int StatusId { get; set; }
 
     [Required]
+    [StringLength(64)]
     public string FirstName { get; set; }
 
     [Required]
+    [StringLength(64)]
     public string LastName { get; set; }
 
     [Required]
+    [StringLength(32)]
     public string HealthCardNumber { get; set; }
 
     [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
@@ -33,4 +36,7 @@ public class PatientDTO : IDto {
 
     [ForeignKey("StatusId")]
     public StatusDTO Status { get; set; }
+
+
+    public List<AppointmentDTO> Appointments { get; set; }
 }

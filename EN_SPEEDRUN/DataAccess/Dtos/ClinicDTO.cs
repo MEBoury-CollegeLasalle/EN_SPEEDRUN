@@ -1,4 +1,5 @@
 ﻿using EN_SPEEDRUN.DataAccess.Interfaces;
+using EN_SPEEDRUN.DataAccess.Pivots;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,9 +14,10 @@ namespace EN_SPEEDRUN.DataAccess.Dtos;
 public class ClinicDTO : IDto {
 
     [Key]
-    public int Id { get; set; }
+    public int Id { get; private set; }
 
     [Required]
+    [StringLength(128)]
     public string Name { get; set; }
 
     [Required]
@@ -32,7 +34,9 @@ public class ClinicDTO : IDto {
     [ForeignKey("AddressId")]
     public AddressDTO Address { get; set; }
 
-    public List<DoctorDTO> Doctors { get; set; }
+
+    [ForeignKey("DoctorId")]
+    public List<ClinicDoctor> ClinicDoctors { get; set; }
 
     public List<AppointmentDTO> Appointments { get; set; }
 }

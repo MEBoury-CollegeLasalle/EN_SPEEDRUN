@@ -8,7 +8,7 @@ namespace EN_SPEEDRUN.Utils.Exceptions;
 internal class InvalidNullArgumentException : Exception {
 
     public string ParamName { get; private set; }
-    public string FunctionName { get; private set }
+    public string FunctionName { get; private set; }
 
     public InvalidNullArgumentException(
         string message, 

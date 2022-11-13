@@ -23,9 +23,11 @@ public class UserDTO : IDto {
     public int ClinicId { get; set; }
 
     [Required]
+    [StringLength(32)]
     public string Username { get; set; }
 
     [Required]
+    [StringLength(128)]
     public string PasswordHash { get; set; }
 
     [Precision(6)]
