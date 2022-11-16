@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "EN_SPEEDRUN": {
+      "commandName": "Project"
+    },
+    "PW_HASHER": {
+      "commandName": "Project",
+      "commandLineArgs": "hasher"
+    }
+  }
+}

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace EN_SPEEDRUN.DataAccess.Dtos;
 
-[Table("Users")]
+[Table("Users", Schema = "dbo")]
 public class UserDTO : IDto {
 
     [Key]
@@ -31,7 +31,7 @@ public class UserDTO : IDto {
     public string PasswordHash { get; set; }
 
     [Precision(6)]
-    public DateTime LastLogin { get; set; }
+    public DateTime? LastLogin { get; set; }
 
     [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime DateCreated { get; set; }

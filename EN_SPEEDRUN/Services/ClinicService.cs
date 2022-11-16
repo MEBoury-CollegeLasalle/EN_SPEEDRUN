@@ -10,17 +10,7 @@ using System.Threading.Tasks;
 namespace EN_SPEEDRUN.Services;
 public class ClinicService : IService {
 
-    private static ClinicService INSTANCE;
-
-    private ClinicService() { }
-
-    public static ClinicService GetInstance() {
-        if (INSTANCE is null) {
-            INSTANCE = new ClinicService();
-        }
-        return INSTANCE;
-    }
-
+    public ClinicService() { }
 
     public ClinicDTO LoadClinicForUser(UserDTO user) {
         using (ClinicContext context = new ClinicContext()) {

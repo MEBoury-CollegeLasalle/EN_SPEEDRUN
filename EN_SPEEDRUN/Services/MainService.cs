@@ -12,9 +12,11 @@ public class MainService {
     private static MainService INSTANCE;
 
     private ILoginService loginService;
+    private ClinicService clinicService;
 
     private MainService() { 
         this.loginService = new LoginService();
+        this.clinicService = new ClinicService();
     }
 
     public static MainService GetInstance() {
@@ -29,9 +31,18 @@ public class MainService {
         return this.loginService;
     }
 
+    public ClinicService GetClinicService() {
+        return this.clinicService;
+    }
+
     public void InitApplication() {
         ApplicationConfiguration.Initialize();
         Application.Run(new MainWindow());
+    }
+
+    public void InitTempHasher() {
+        ApplicationConfiguration.Initialize();
+        Application.Run(new TempPasswordHasher());
     }
 
     public void ExitApplication() {

@@ -50,6 +50,7 @@ partial class LoginWindow {
             this.passwordField.TabIndex = 1;
             this.passwordField.UseSystemPasswordChar = true;
             this.passwordField.WordWrap = false;
+            this.passwordField.KeyDown += new KeyEventHandler(this.PasswordField_KeyPressed);
             // 
             // loginButton
             // 

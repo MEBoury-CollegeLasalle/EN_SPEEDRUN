@@ -1,5 +1,6 @@
 ﻿using EN_SPEEDRUN.DataAccess.Dtos;
 using EN_SPEEDRUN.DataAccess.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,7 +10,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace EN_SPEEDRUN.DataAccess.Pivots;
+
+[Table("ClinicDoctors")]
+[Index("DoctorId", "ClinicId", IsUnique = true, Name = "UNIQ_ClinicDoctors_ClinicId_DoctorId")]
 public class ClinicDoctor : IPivot {
+
+    [Key]
+    public int Id { get; set; }
 
     [Required]
     public int DoctorId { get; set; }

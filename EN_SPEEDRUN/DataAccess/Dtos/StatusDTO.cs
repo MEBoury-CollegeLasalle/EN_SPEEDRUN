@@ -18,10 +18,10 @@ public class StatusDTO : IDto {
 
 
     public enum Statuses {
-        CREATED = 0,
-        ACTIVE = 1,
-        INACTIVE = 2,
-        SUSPENDED = 3,
-        DELETED = 4
+        CREATED = 1,
+        ACTIVE = 2,
+        INACTIVE = 3,
+        SUSPENDED = 4,
+        DELETED = 5
     }
 }

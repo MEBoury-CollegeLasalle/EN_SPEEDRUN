@@ -39,4 +39,14 @@ public class ClinicDTO : IDto {
     public List<ClinicDoctor> ClinicDoctors { get; set; }
 
     public List<AppointmentDTO> Appointments { get; set; }
+
+
+
+
+
+    public List<DoctorDTO> GetDoctors() {
+        List<DoctorDTO> doctors = new List<DoctorDTO>();
+        this.ClinicDoctors.ForEach(x => doctors.Add(x.Doctor));
+        return doctors;
+    }
 }

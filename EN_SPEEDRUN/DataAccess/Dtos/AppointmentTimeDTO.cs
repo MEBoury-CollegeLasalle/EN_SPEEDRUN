@@ -1,4 +1,5 @@
 ﻿using EN_SPEEDRUN.DataAccess.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,6 +17,9 @@ public class AppointmentTimeDTO : IDto {
     public int Id { get; private set; }
 
     [Required]
-    public TimeOnly timeOfDay { get; set; }
+    public int Hours { get; set; }
+
+    [Required]
+    public int Minutes { get; set; }
 
 }

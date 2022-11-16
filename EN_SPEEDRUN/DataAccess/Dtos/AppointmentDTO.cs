@@ -18,8 +18,9 @@ public class AppointmentDTO : IDto {
     [Required]
     public int StatusId { get; set; }
 
+    [Column("Date", TypeName = "date")]
     [Required]
-    public DateOnly Date { get; set; }
+    public DateTime Date { get; set; }
 
     [Required]
     public int PatientId { get; set; }

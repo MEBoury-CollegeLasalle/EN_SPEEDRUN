@@ -26,6 +26,8 @@ public partial class LoginWindow : Form {
 
     private void loginButton_Click(object sender, EventArgs e) {
         try {
+            Console.WriteLine(this.usernameField.Text);
+            Console.WriteLine(this.passwordField.Text); // who cares, its potatoes
             this.loginService.LogUserIn(this.usernameField.Text, this.passwordField.Text);
             this.DialogResult = DialogResult.OK;
         } catch (UserNotFoundException unfe) {
@@ -50,6 +52,12 @@ public partial class LoginWindow : Form {
     private void UsernameField_TextChanged(object? sender, EventArgs e) {
         if (this.usernameField.ForeColor == LoginWindow.invalidTextColor) {
             this.usernameField.ForeColor = LoginWindow.defaultTextColor;
+        }
+    }
+
+    private void PasswordField_KeyPressed(object sender, KeyEventArgs args) {
+        if (args.KeyCode == Keys.Enter) {
+            this.loginButton.PerformClick();
         }
     }
 }

@@ -20,12 +20,15 @@ public class DoctorDTO : IDto {
     public int StatusId { get; set; }
 
     [Required]
+    [StringLength(48)]
     public string FirstName { get; set; }
 
     [Required]
+    [StringLength(48)]
     public string LastName { get; set; }
 
     [Required]
+    [StringLength(32)]
     public string LicenseNo { get; set; }
 
     [Required]

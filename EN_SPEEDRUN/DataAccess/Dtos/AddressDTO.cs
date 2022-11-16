@@ -26,6 +26,7 @@ public class AddressDTO : IDto {
     public string? StreetExtension { get; set; }
 
     [Required]
+    [StringLength(64)]
     public string City { get; set; }
 
     [Required]
@@ -42,5 +43,19 @@ public class AddressDTO : IDto {
 
     [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime DateCreated { get; private set; }
+
+
+
+
+    public string ToAddressString() {
+        return this.StreetNumber + " "
+            + this.Street
+            + (this.StreetExtension == null ? "" : " " + this.StreetExtension)
+            + ", " + this.City
+            + ", " + this.Region
+            + ", " + this.Country
+            + ", " + this.PostalCode;
+
+    }
 
 }

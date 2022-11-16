@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace EN_SPEEDRUN.Services;
-internal class CryptographyService {
+public class CryptographyService {
     private const int _saltSize = 16; // 128 bits
     private const int _keySize = 32; // 256 bits
     private const int _iterations = 100000;
@@ -41,7 +41,7 @@ internal class CryptographyService {
     }
 
 
-    private string HashPassword(string clearPassword) {
+    public string HashPassword(string clearPassword) {
         byte[] salt = RandomNumberGenerator.GetBytes(_saltSize);
         byte[] key = Rfc2898DeriveBytes.Pbkdf2(
             clearPassword,

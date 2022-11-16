@@ -8,6 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace EN_SPEEDRUN.DataAccess.Contexts;
+
+/// <summary>
+/// 
+/// </summary>
 public class ClinicContext : DbContext {
 
     
@@ -21,8 +25,9 @@ public class ClinicContext : DbContext {
     public DbSet<DoctorDTO> Doctors { get; set; }
     public DbSet<AppointmentDTO> Appointments { get; set; }
 
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-        optionsBuilder.UseSqlServer(@"Server=.\SQL2019EXPRESS;Database=db_speedrun_en;Integrated security=true;");
+        optionsBuilder.UseSqlServer(@"Server=.\SQL2019EXPRESS;Database=db_speedrun_en;Integrated security=true;TrustServerCertificate=true;");
     }
 
 
@@ -52,13 +57,9 @@ public class ClinicContext : DbContext {
         try {
             ClinicDTO clinic = this.Clinics
                 .Where(clinic => clinic.Id == user.ClinicId)
+                .Include(clinic => clinic.Address)
                 .Include(clinic => clinic.ClinicDoctors)
-                    .ThenInclude(clinicDoctor => clinicDoctor.Doctor)
-                        .ThenInclude(doctor => doctor.Status)
-                .Include(clinic => clinic.Appointments)
-                    .ThenInclude(appointment => appointment.Status)
-                .Include(clinic => clinic.Appointments)
-                    .ThenInclude(appointment => appointment.AppointmentTime)
+                    .ThenInclude(clinicDocs => clinicDocs.Doctor)
                 .Single();
             return clinic;
         } catch (Exception ex) {
@@ -84,6 +85,90 @@ public class ClinicContext : DbContext {
 
 
     #region Appointment-related methods
+
+    public List<AppointmentDTO> GetFilteredClinicAppointments(
+            ClinicDTO clinic,
+            string? patientNameSearch = null,
+            DoctorDTO? doctorCriterion = null, 
+            DateTime? afterDate = null,
+            DateTime? beforeDate = null) {
+
+        return this.Appointments
+            .Include(appointment => appointment.AppointmentTime)
+            .Include(appointment => appointment.Patient)
+            .Include(appointment => appointment.Doctor)
+            .AsEnumerable()
+            .Where(appointment => {
+
+                // Clinic filter criterion
+                if (appointment.Clinic.Id != clinic.Id) {
+                    // appointment is not for this clinic: reject it
+                    return false;
+                }
+
+                // patient name search criterion
+                if (patientNameSearch is not null) {
+                    if (appointment.Patient.FirstName.Contains(patientNameSearch) 
+                    || appointment.Patient.LastName.Contains(patientNameSearch)) {
+                        // patient name contains search criterion. OK
+                    } else {
+                        // criterion not null + name not contained: reject this appointment
+                        return false;
+                    }
+                }
+
+                // Doctor selection criterion
+                if (doctorCriterion is not null && appointment.Doctor.Id != doctorCriterion.Id) {
+                    // doctor criterion is set and doesnt match the appointment's doctor.
+                    // reject this appointment
+                    return false;
+                }
+
+                // After (or equal) appointment date criterion
+                if (afterDate is not null && appointment.Date.Date < afterDate.Value.Date) {
+                    // appointment is before the lower date limit criterion: reject appointment
+                    return false;
+                }
+
+                // Before (or equal) appointment date criterion
+                if (beforeDate is not null && appointment.Date.Date > beforeDate.Value.Date) {
+                    // appointment is after the upper date limit criterion: reject appointment
+                    return false;
+                }
+
+                // All filters checked: appointment valid for this criteria set.
+                return true;
+            })
+            .ToList();
+
+    }
+
+    public AppointmentDTO GetAppointment(int id) {
+        return this.Appointments
+            .Where(appointment => appointment.Id == id)
+            .Include(appointment => appointment.AppointmentTime)
+            .Include(appointment => appointment.Patient)
+            .Include(appointment => appointment.Doctor)
+            .Single();
+    }
+
+    public List<AppointmentDTO> GetPatientAppointments(PatientDTO patient) {
+        return this.Appointments
+            .Where(appointment => appointment.PatientId == patient.Id)
+            .Include(appointment => appointment.AppointmentTime)
+            .Include(appointment => appointment.Patient)
+            .Include(appointment => appointment.Doctor)
+            .ToList();
+    }
+
+    public List<AppointmentDTO> GetDoctorAppointments(DoctorDTO doctor) {
+        return this.Appointments
+            .Where(appointment => appointment.DoctorId == doctor.Id)
+            .Include(appointment => appointment.AppointmentTime)
+            .Include(appointment => appointment.Patient)
+            .Include(appointment => appointment.Doctor)
+            .ToList();
+    }
 
     /// <summary>
     /// Saves a passed appointment object in the database

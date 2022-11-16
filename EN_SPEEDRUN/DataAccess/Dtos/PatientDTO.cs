@@ -19,15 +19,15 @@ public class PatientDTO : IDto {
     public int StatusId { get; set; }
 
     [Required]
-    [StringLength(64)]
+    [StringLength(48)]
     public string FirstName { get; set; }
 
     [Required]
-    [StringLength(64)]
+    [StringLength(48)]
     public string LastName { get; set; }
 
     [Required]
-    [StringLength(32)]
+    [StringLength(12)]
     public string HealthCardNumber { get; set; }
 
     [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
