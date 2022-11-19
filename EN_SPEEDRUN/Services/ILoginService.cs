@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EN_SPEEDRUN.Services.Interfaces;
+namespace EN_SPEEDRUN.Services;
 public interface ILoginService : IService {
 
     public UserDTO? GetLoggedInUser();

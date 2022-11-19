@@ -1,5 +1,4 @@
-﻿using EN_SPEEDRUN.DataAccess.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -9,13 +8,22 @@ using System.Threading.Tasks;
 namespace EN_SPEEDRUN.DataAccess.Dtos;
 
 [Table("Statuses")]
-public class StatusDTO : IDto {
+public class StatusDTO : IDTO {
 
     public int Id { get; set; }
 
     [Column("StatusCode", TypeName = "nvarchar(16)")]
     public Statuses StatusCode { get; set; }
 
+
+    public StatusDTO(Statuses status) { 
+        this.StatusCode = status;
+    }
+
+
+    public int GetId() {
+        return this.Id;
+    }
 
     public enum Statuses {
         CREATED = 1,

@@ -1,5 +1,4 @@
-﻿using EN_SPEEDRUN.DataAccess.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,7 +9,7 @@ using System.Threading.Tasks;
 namespace EN_SPEEDRUN.DataAccess.Dtos;
 
 [Table("Patients")]
-public class PatientDTO : IDto {
+public class PatientDTO : IDTO {
 
     [Key]
     public int Id { get; set; }
@@ -39,4 +38,31 @@ public class PatientDTO : IDto {
 
 
     public List<AppointmentDTO> Appointments { get; set; }
+
+
+
+    public PatientDTO(
+        string firstName, 
+        string lastName, 
+        string healthCardNumber, 
+        StatusDTO status, 
+        List<AppointmentDTO>? appointments = null
+        ) {
+
+        this.FirstName = firstName;
+        this.LastName = lastName;
+        this.HealthCardNumber = healthCardNumber;
+        this.Status = status;
+        this.StatusId = status.GetId();
+        this.Appointments = appointments ?? new List<AppointmentDTO>();
+    }
+
+
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    /// <returns></returns>
+    public int GetId() {
+        return this.Id;
+    }
 }

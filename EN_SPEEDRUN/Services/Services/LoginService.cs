@@ -1,6 +1,7 @@
-﻿using EN_SPEEDRUN.DataAccess.Contexts;
+﻿using EN_SPEEDRUN.DataAccess;
+using EN_SPEEDRUN.DataAccess.Contexts;
+using EN_SPEEDRUN.DataAccess.Daos;
 using EN_SPEEDRUN.DataAccess.Dtos;
-using EN_SPEEDRUN.Services.Interfaces;
 using EN_SPEEDRUN.UI;
 using EN_SPEEDRUN.Utils.Exceptions;
 using Microsoft.VisualBasic.ApplicationServices;
@@ -11,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EN_SPEEDRUN.Services;
+namespace EN_SPEEDRUN.Services.Services;
 public class LoginService : ILoginService {
 
     private UserDTO? loggedInUser;
@@ -41,21 +42,20 @@ public class LoginService : ILoginService {
     /// <param name="password"></param>
     /// <exception cref="InvalidPasswordException"></exception>
     public void LogUserIn(string username, string password) {
-        Console.WriteLine(username);
-        Console.WriteLine(password);
-        using (LoginContext context = new LoginContext()) {
-            UserDTO user;
+        using (UserDAO userDao = new UserDAO(new LoginContext())) {
             try {
-                user = context.GetUserByUserName(username);
+                UserDTO user = userDao.GetByUsername(username);
+                if (this.cryptographyService.ValidatePassword(password, user.PasswordHash)) {
+                    userDao.UpdateUserLastLogin(user);
+                    this.loggedInUser = user;
+
+                } else {
+                    throw new InvalidPasswordException("Invalid password");
+                }
             } catch (UserNotFoundException unfe) {
-                Debug.WriteLine(unfe.StackTrace);
                 throw new UserNotFoundException("Invalid username", null, unfe);
             }
-            if (this.cryptographyService.ValidatePassword(password, user)) {
-                this.loggedInUser = user;
-            } else {
-                throw new InvalidPasswordException("Invalid password");
-            }
+
         }
     }
 

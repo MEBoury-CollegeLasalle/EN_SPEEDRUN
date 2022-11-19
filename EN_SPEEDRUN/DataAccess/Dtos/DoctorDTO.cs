@@ -1,5 +1,4 @@
-﻿using EN_SPEEDRUN.DataAccess.Interfaces;
-using EN_SPEEDRUN.DataAccess.Pivots;
+﻿using EN_SPEEDRUN.DataAccess.Pivots;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,7 +10,7 @@ using System.Threading.Tasks;
 namespace EN_SPEEDRUN.DataAccess.Dtos;
 
 [Table("Doctors")]
-public class DoctorDTO : IDto {
+public class DoctorDTO : IDTO {
 
     [Key]
     public int Id { get; set; }
@@ -49,5 +48,36 @@ public class DoctorDTO : IDto {
 
     public List<AppointmentDTO> Appointments { get; set; }
 
+
+
+    public DoctorDTO(
+        string firstName, 
+        string lastName, 
+        string licenseNo,
+        StatusDTO status,
+        DateTime dateHired, 
+        List<ClinicDoctor>? clinicDoctors = null, 
+        List<AppointmentDTO>? appointments = null) {
+
+        this.FirstName = firstName;
+        this.LastName = lastName;
+        this.LicenseNo = licenseNo;
+        this.Status = status;
+        this.StatusId = status.GetId();
+        this.DateHired = dateHired;
+        this.ClinicDoctors = clinicDoctors ?? new List<ClinicDoctor>();
+        this.Appointments = appointments ?? new List<AppointmentDTO>();
+    }
+
+
+
+
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    /// <returns></returns>
+    public int GetId() {
+        return this.Id;
+    }
 
 }

@@ -1,4 +1,4 @@
-﻿using EN_SPEEDRUN.Services.Interfaces;
+﻿using EN_SPEEDRUN.DataAccess.Contexts;
 using EN_SPEEDRUN.UI;
 using System;
 using System.Collections.Generic;
@@ -6,24 +6,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EN_SPEEDRUN.Services;
+namespace EN_SPEEDRUN.Services.Services;
 public class MainService {
 
-    private static MainService INSTANCE;
+    private static MainService? INSTANCE;
 
     private ILoginService loginService;
-    private ClinicService clinicService;
+    private ClinicService? clinicService;
 
-    private MainService() { 
+    private MainService() {
         this.loginService = new LoginService();
-        this.clinicService = new ClinicService();
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public static MainService GetInstance() {
-        if (INSTANCE is null) {
-            INSTANCE = new MainService();
-        }
+        INSTANCE ??= new MainService();
         return INSTANCE;
+    }
+
+
+    public void InitMainServiceAfterLogin() {
+        ClinicContext context = new ClinicContext();
+        this.clinicService = new ClinicService(context);
     }
 
 
@@ -32,6 +39,7 @@ public class MainService {
     }
 
     public ClinicService GetClinicService() {
+        // TODO: require login
         return this.clinicService;
     }
 

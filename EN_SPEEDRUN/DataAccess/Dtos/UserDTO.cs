@@ -1,5 +1,4 @@
-﻿using EN_SPEEDRUN.DataAccess.Interfaces;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,7 +10,7 @@ using System.Threading.Tasks;
 namespace EN_SPEEDRUN.DataAccess.Dtos;
 
 [Table("Users", Schema = "dbo")]
-public class UserDTO : IDto {
+public class UserDTO : IDTO {
 
     [Key]
     public int Id { get; set; }
@@ -37,11 +36,30 @@ public class UserDTO : IDto {
     public DateTime DateCreated { get; set; }
 
 
-
     [ForeignKey("ClinicId")]
     public ClinicDTO Clinic { get; set; }
 
     [ForeignKey("StatusId")]
     public StatusDTO Status { get; set; }
 
+
+
+
+    public UserDTO(string username, string passwordHash, StatusDTO status, ClinicDTO clinic) {
+        this.Username = username;
+        this.PasswordHash = passwordHash;
+        this.Status = status;
+        this.StatusId = status.GetId();
+        this.Clinic = clinic;
+        this.ClinicId = clinic.GetId();
+    }
+
+
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    /// <returns></returns>
+    public int GetId() {
+        return this.Id;
+    }
 }

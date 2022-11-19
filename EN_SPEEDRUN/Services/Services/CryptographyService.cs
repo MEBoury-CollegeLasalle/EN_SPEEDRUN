@@ -7,7 +7,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EN_SPEEDRUN.Services;
+namespace EN_SPEEDRUN.Services.Services;
 public class CryptographyService {
     private const int _saltSize = 16; // 128 bits
     private const int _keySize = 32; // 256 bits
@@ -23,8 +23,7 @@ public class CryptographyService {
         return INSTANCE ??= new CryptographyService();
     }
 
-    public bool ValidatePassword(string passwordToTest, UserDTO user) {
-        string hash = user.PasswordHash;
+    public bool ValidatePassword(string passwordToTest, string hash) {
         string[] segments = hash.Split(_segmentDelimiter);
         byte[] key = Convert.FromHexString(segments[0]);
         byte[] salt = Convert.FromHexString(segments[1]);

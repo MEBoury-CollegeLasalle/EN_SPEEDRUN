@@ -83,7 +83,7 @@ partial class MainWindow {
             this.patientNameFilter.Name = "patientNameFilter";
             this.patientNameFilter.Size = new System.Drawing.Size(244, 27);
             this.patientNameFilter.TabIndex = 1;
-            this.patientNameFilter.TextChanged += new System.EventHandler(this.patientNameFilter_TextChanged);
+            this.patientNameFilter.TextChanged += new System.EventHandler(this.PatientNameFilter_TextChanged);
             // 
             // listView1
             // 
@@ -94,7 +94,7 @@ partial class MainWindow {
             this.listView1.Size = new System.Drawing.Size(250, 262);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
+            this.listView1.SelectedIndexChanged += new System.EventHandler(this.ListView1_SelectedIndexChanged);
             // 
             // buttonLogout
             // 
@@ -107,7 +107,7 @@ partial class MainWindow {
             this.buttonLogout.TabIndex = 2;
             this.buttonLogout.Text = "Logout";
             this.buttonLogout.UseVisualStyleBackColor = true;
-            this.buttonLogout.Click += new System.EventHandler(this.buttonLogout_Click);
+            this.buttonLogout.Click += new System.EventHandler(this.ButtonLogout_Click);
             // 
             // labelFooter
             // 

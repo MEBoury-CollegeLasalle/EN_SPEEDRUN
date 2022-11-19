@@ -1,5 +1,4 @@
 ﻿using EN_SPEEDRUN.DataAccess.Dtos;
-using EN_SPEEDRUN.DataAccess.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

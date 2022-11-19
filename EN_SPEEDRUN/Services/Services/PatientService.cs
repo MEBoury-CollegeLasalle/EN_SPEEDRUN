@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EN_SPEEDRUN.Services;
+namespace EN_SPEEDRUN.Services.Services;
 public class PatientService {
 
     private static PatientService INSTANCE;

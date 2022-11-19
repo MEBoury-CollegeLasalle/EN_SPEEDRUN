@@ -1,16 +1,18 @@
-﻿using EN_SPEEDRUN.DataAccess.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace EN_SPEEDRUN.DataAccess.Dtos;
 
 [Table("Appointments")]
-public class AppointmentDTO : IDto {
+public class AppointmentDTO : IDTO {
+
+    #region Properties
 
     [Key]
     public int Id { get; private set; }
@@ -54,4 +56,40 @@ public class AppointmentDTO : IDto {
 
     [ForeignKey("AppointmentTimeId")]
     public AppointmentTimeDTO AppointmentTime { get; set; }
+
+    #endregion
+
+
+    public AppointmentDTO(
+        DateTime date, 
+        StatusDTO status, 
+        PatientDTO patient, 
+        DoctorDTO doctor, 
+        ClinicDTO clinic, 
+        AppointmentTimeDTO appointmentTime
+        ) {
+
+        this.Date = date;
+        this.Status = status;
+        this.StatusId = status.GetId();
+        this.Patient = patient;
+        this.PatientId = patient.GetId();
+        this.Doctor = doctor;
+        this.DoctorId = doctor.GetId();
+        this.Clinic = clinic;
+        this.ClinicId = clinic.GetId();
+        this.AppointmentTime = appointmentTime;
+        this.AppointmentTimeId = appointmentTime.GetId();
+    }
+
+
+
+
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    /// <returns></returns>
+    public int GetId() {
+        return this.Id;
+    }
 }
