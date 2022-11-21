@@ -1,9 +1,9 @@
-﻿using EN_SPEEDRUN.DataAccess.Pivots;
-using Microsoft.VisualBasic.ApplicationServices;
+﻿using Microsoft.VisualBasic.ApplicationServices;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -24,8 +24,6 @@ public class ClinicDTO : IDTO {
     [Required]
     public int AddressId { get; set; }
 
-    // TODO: Modelize opening hours
-
 
 
     [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
@@ -33,15 +31,14 @@ public class ClinicDTO : IDTO {
 
 
     [ForeignKey("AddressId")]
-    public AddressDTO Address { get; set; }
+    public AddressDTO Address { get; set; } = null!;
 
 
-    [ForeignKey("DoctorId")]
-    public List<ClinicDoctor> ClinicDoctors { get; set; }
+    public virtual List<ClinicDoctorDTO> ClinicDoctors { get; set; } = null!;
 
-    public List<AppointmentDTO> Appointments { get; set; }
+    public virtual List<AppointmentDTO> Appointments { get; set; } = null!;
 
-    public List<UserDTO> Users { get; set; }
+    public virtual List<UserDTO> Users { get; set; } = null!;
 
 
 
@@ -53,7 +50,7 @@ public class ClinicDTO : IDTO {
     public ClinicDTO(
         string name, 
         AddressDTO address, 
-        List<ClinicDoctor>? clinicDoctorsList = null, 
+        List<ClinicDoctorDTO>? clinicDoctorsList = null, 
         List<AppointmentDTO>? appointmentsList = null,
         List<UserDTO>? users = null
         ) {
@@ -61,7 +58,7 @@ public class ClinicDTO : IDTO {
         this.Name = name;
         this.Address = address;
         this.AddressId = address.GetId();
-        this.ClinicDoctors = clinicDoctorsList ?? new List<ClinicDoctor>();
+        this.ClinicDoctors = clinicDoctorsList ?? new List<ClinicDoctorDTO>();
         this.Appointments = appointmentsList ?? new List<AppointmentDTO>();
         this.Users = users ?? new List<UserDTO>();
 
@@ -79,6 +76,10 @@ public class ClinicDTO : IDTO {
     public List<DoctorDTO> GetDoctors() {
         List<DoctorDTO> doctors = new List<DoctorDTO>();
         this.ClinicDoctors.ForEach(x => doctors.Add(x.Doctor));
+        Debug.WriteLine("#### DOCS ####");
+        foreach (DoctorDTO doc in doctors) {
+            Debug.WriteLine(doc.DisplayName);
+        }
         return doctors;
     }
 }

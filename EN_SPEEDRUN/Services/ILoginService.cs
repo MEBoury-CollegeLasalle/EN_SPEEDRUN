@@ -10,9 +10,9 @@ public interface ILoginService : IService {
 
     public UserDTO? GetLoggedInUser();
 
-    public void RequireLoggedInUser();
+    public UserDTO RequireLoggedInUser();
 
-    public void LogUserIn(string username, string password);
+    public UserDTO LogUserIn(string username, string password, bool withActiveStatus = true);
 
     public void LogUserOut();
 

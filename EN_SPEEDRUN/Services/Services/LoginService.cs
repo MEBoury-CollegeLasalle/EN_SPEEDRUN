@@ -13,13 +13,17 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace EN_SPEEDRUN.Services.Services;
-public class LoginService : ILoginService {
+public class LoginService : AbstractDtoService<UserDTO>, ILoginService {
 
     private UserDTO? loggedInUser;
-    private CryptographyService cryptographyService;
+    private readonly CryptographyService cryptographyService;
 
-    public LoginService() {
+    public LoginService(IContext<UserDTO> dbContext) : base(new UserDAO(dbContext)) {
         this.cryptographyService = CryptographyService.GetInstance();
+    }
+
+    protected UserDAO GetUserDao() {
+        return (UserDAO) this.daoInstance;
     }
 
     public UserDTO? GetLoggedInUser() {
@@ -29,10 +33,8 @@ public class LoginService : ILoginService {
     /// <summary>
     /// 
     /// </summary>
-    public void RequireLoggedInUser() {
-        if (!this.IsUserLoggedIn()) {
-            this.OpenLoginModal();
-        }
+    public UserDTO RequireLoggedInUser() {
+        return this.loggedInUser ?? this.OpenLoginModal();
     }
 
     /// <summary>
@@ -40,30 +42,30 @@ public class LoginService : ILoginService {
     /// </summary>
     /// <param name="username"></param>
     /// <param name="password"></param>
+    /// <param name="withActiveStatus"></param>
+    /// <exception cref="InvalidStatusException"></exception>
     /// <exception cref="InvalidPasswordException"></exception>
-    public void LogUserIn(string username, string password) {
-        using (UserDAO userDao = new UserDAO(new LoginContext())) {
-            try {
-                UserDTO user = userDao.GetByUsername(username);
-                if (this.cryptographyService.ValidatePassword(password, user.PasswordHash)) {
-                    userDao.UpdateUserLastLogin(user);
-                    this.loggedInUser = user;
-                    MainService.GetInstance().InitMainServiceAfterLogin();
-
-                } else {
-                    throw new InvalidPasswordException("Invalid password");
-                }
-            } catch (UserNotFoundException unfe) {
-                Debug.WriteLine(unfe.Message);
-                Debug.WriteLine(unfe.StackTrace);
-                if (unfe.InnerException is not null) {
-                    Debug.WriteLine(unfe.InnerException.Message);
-                    Debug.WriteLine(unfe.InnerException.StackTrace);
-                }
-                throw new UserNotFoundException("Invalid username", null, unfe);
+    /// <exception cref="UserNotFoundException"></exception>
+    public UserDTO LogUserIn(string username, string password, bool withActiveStatus = true) {
+        try {
+            StatusDTO validStatus = MainService.GetInstance().GetStatusService().GetActiveStatus();
+            UserDTO user = this.GetUserDao().GetByUsername(username);
+            if (withActiveStatus && !(user.StatusId == validStatus.Id)) {
+                throw new InvalidStatusException("Invalid user status: {0} expected {1}.", MainService.GetInstance().GetStatusService().GetById(user.StatusId), validStatus);
             }
+            if (this.cryptographyService.ValidatePassword(password, user.PasswordHash)) {
+                this.GetUserDao().UpdateUserLastLogin(user);
+                this.loggedInUser = user;
+                MainService.GetInstance().InitMainServiceAfterLogin();
+                return user;
 
+            } else {
+                throw new InvalidPasswordException("Invalid password");
+            }
+        } catch (UserNotFoundException unfe) {
+            throw new UserNotFoundException("Invalid username", null, unfe);
         }
+
     }
 
     /// <summary>
@@ -74,16 +76,9 @@ public class LoginService : ILoginService {
         MainService.GetInstance().ExitApplication();
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
-    private bool IsUserLoggedIn() {
-        return this.loggedInUser != null;
-    }
-
-    private void OpenLoginModal() {
-        LoginWindow loginWindow = new LoginWindow(this);
-        loginWindow.ShowDialog();
+    private UserDTO OpenLoginModal() {
+        LoginWindow loginWindow = new LoginWindow();
+        _ = loginWindow.ShowDialog();
+        return loginWindow.LoggedInUser;
     }
 }

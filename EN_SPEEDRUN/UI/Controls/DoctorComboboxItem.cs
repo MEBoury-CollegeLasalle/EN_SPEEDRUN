@@ -5,19 +5,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EN_SPEEDRUN.UI;
+namespace EN_SPEEDRUN.UI.Controls;
 internal class DoctorComboboxItem {
 
     public string DisplayName { get; set; }
 
-    public DoctorDTO? doctor { get; set; }
+    public DoctorDTO? Doctor { get; set; }
 
     public DoctorComboboxItem(DoctorDTO? doctor) {
         if (doctor is null) {
             this.DisplayName = "ANY";
         } else {
-            this.DisplayName = doctor.FirstName + " " + doctor.LastName;
+            this.DisplayName = doctor.DisplayName;
         }
-        this.doctor = doctor;
+        this.Doctor = doctor;
     }
 }

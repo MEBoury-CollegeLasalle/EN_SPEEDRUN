@@ -1,9 +1,11 @@
-﻿using EN_SPEEDRUN.Services.Services;
+﻿using EN_SPEEDRUN.DataAccess.Dtos;
+using EN_SPEEDRUN.Services.Services;
 using EN_SPEEDRUN.Utils.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -13,31 +15,32 @@ using System.Windows.Forms;
 namespace EN_SPEEDRUN.UI;
 public partial class LoginWindow : Form {
 
-    private static Color defaultTextColor = System.Drawing.SystemColors.ControlText;
-    private static Color invalidTextColor = System.Drawing.Color.DarkRed;
+    private static readonly Color DEFAULT_TEXT_COLOR = System.Drawing.SystemColors.ControlText;
+    private static readonly Color INVALID_TEXT_COLOR = System.Drawing.Color.Red;
+    public UserDTO LoggedInUser { get; set; } = null!;
 
-    private LoginService loginService;
-
-    public LoginWindow(LoginService loginService) {
-        this.loginService = loginService;
+    public LoginWindow() {
         InitializeComponent();
         this.usernameField.TextChanged += this.UsernameField_TextChanged;
     }
 
-    private void loginButton_Click(object sender, EventArgs e) {
+    private void LoginButton_Click(object sender, EventArgs e) {
         try {
-            Console.WriteLine(this.usernameField.Text);
-            Console.WriteLine(this.passwordField.Text); // who cares, its potatoes
-            this.loginService.LogUserIn(this.usernameField.Text, this.passwordField.Text);
+            this.LoggedInUser = MainService.GetInstance().GetLoginService().LogUserIn(this.usernameField.Text, this.passwordField.Text);
             this.DialogResult = DialogResult.OK;
+            this.Close();
         } catch (UserNotFoundException unfe) {
-            this.usernameField.ForeColor = LoginWindow.invalidTextColor;
+            this.usernameField.ForeColor = LoginWindow.INVALID_TEXT_COLOR;
             this.usernameField.Refresh();
             this.usernameField.Focus();
             MessageBox.Show(unfe.Message);
         } catch (InvalidPasswordException ipe) {
             MessageBox.Show(ipe.Message);
             this.usernameField.Focus();
+        } catch (Exception ex) {
+            Debug.WriteLine(ex.Message);
+            Debug.WriteLine(ex.StackTrace);
+            MessageBox.Show(ex.Message);
         }
     }
 
@@ -45,13 +48,13 @@ public partial class LoginWindow : Form {
         MessageBox.Show("Login is required to use this application.\nApplication will now exit.");
         this.usernameField.Clear();
         this.passwordField.Clear();
-        this.loginService.LogUserOut();
+        MainService.GetInstance().GetLoginService().LogUserOut();
         MainService.GetInstance().ExitApplication();
     }
 
     private void UsernameField_TextChanged(object? sender, EventArgs e) {
-        if (this.usernameField.ForeColor == LoginWindow.invalidTextColor) {
-            this.usernameField.ForeColor = LoginWindow.defaultTextColor;
+        if (this.usernameField.ForeColor == LoginWindow.INVALID_TEXT_COLOR) {
+            this.usernameField.ForeColor = LoginWindow.DEFAULT_TEXT_COLOR;
         }
     }
 

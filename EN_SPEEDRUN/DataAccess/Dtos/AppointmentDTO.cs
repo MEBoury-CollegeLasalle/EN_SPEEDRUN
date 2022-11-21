@@ -45,22 +45,26 @@ public class AppointmentDTO : IDTO {
     // Navigation properties
 
     [ForeignKey("StatusId")]
-    public StatusDTO Status { get; set; }
+    public StatusDTO Status { get; set; } = null!;
 
     [ForeignKey("PatientId")]
-    public PatientDTO Patient { get; set; }
+    public PatientDTO Patient { get; set; } = null!;
 
     [ForeignKey("DoctorId")]
-    public DoctorDTO Doctor { get; set; }
+    public DoctorDTO Doctor { get; set; } = null!;
 
     [ForeignKey("ClinicId")]
-    public ClinicDTO Clinic { get; set; }
+    public ClinicDTO Clinic { get; set; } = null!;
 
     [ForeignKey("AppointmentTimeId")]
-    public AppointmentTimeDTO AppointmentTime { get; set; }
+    public AppointmentTimeDTO AppointmentTime { get; set; } = null!;
 
     #endregion
 
+
+    public AppointmentDTO() {
+        
+    }
 
     public AppointmentDTO(DateTime date, 
         int statusId, 
@@ -108,5 +112,14 @@ public class AppointmentDTO : IDTO {
     /// <returns></returns>
     public int GetId() {
         return this.Id;
+    }
+
+    public string ToStringForListView() {
+        return this.AppointmentTime.ToString() + 
+            " " + this.Status.StatusCode.ToString() + 
+            " " + this.Patient.LastName + 
+            ", " + this.Patient.FirstName + 
+            " with Dr. " + this.Doctor.FirstName + 
+            " " + this.Doctor.LastName;
     }
 }

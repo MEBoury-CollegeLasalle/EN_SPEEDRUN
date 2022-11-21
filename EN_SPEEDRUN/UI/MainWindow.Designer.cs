@@ -28,17 +28,20 @@ partial class MainWindow {
             this.filtersPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.labelAppointmentFilters = new System.Windows.Forms.Label();
             this.patientNameFilter = new System.Windows.Forms.TextBox();
+            this.doctorSelectorFilter = new System.Windows.Forms.ComboBox();
+            this.lowerDateFilter = new System.Windows.Forms.DateTimePicker();
+            this.upperDateFilter = new System.Windows.Forms.DateTimePicker();
             this.listView1 = new System.Windows.Forms.ListView();
             this.buttonLogout = new System.Windows.Forms.Button();
             this.labelFooter = new System.Windows.Forms.Label();
             this.clinicNameLabel = new System.Windows.Forms.Label();
             this.clinicAddressLabel = new System.Windows.Forms.Label();
             this.mainPanel = new System.Windows.Forms.Panel();
+            this.buttonDeleteAppointment = new System.Windows.Forms.Button();
+            this.buttonEditAppointment = new System.Windows.Forms.Button();
+            this.buttonCreatePatient = new System.Windows.Forms.Button();
             this.buttonCreateAppointment = new System.Windows.Forms.Button();
             this.userGreetingLabel = new System.Windows.Forms.Label();
-            this.doctorSelectorFilter = new System.Windows.Forms.ComboBox();
-            this.lowerDateFilter = new System.Windows.Forms.DateTimePicker();
-            this.upperDateFilter = new System.Windows.Forms.DateTimePicker();
             this.appointmentsPanel.SuspendLayout();
             this.filtersPanel.SuspendLayout();
             this.mainPanel.SuspendLayout();
@@ -74,7 +77,7 @@ partial class MainWindow {
             this.labelAppointmentFilters.Name = "labelAppointmentFilters";
             this.labelAppointmentFilters.Size = new System.Drawing.Size(244, 25);
             this.labelAppointmentFilters.TabIndex = 0;
-            this.labelAppointmentFilters.Text = "AppointmentFilters";
+            this.labelAppointmentFilters.Text = "Appointment Filters";
             this.labelAppointmentFilters.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // patientNameFilter
@@ -85,15 +88,45 @@ partial class MainWindow {
             this.patientNameFilter.TabIndex = 1;
             this.patientNameFilter.TextChanged += new System.EventHandler(this.PatientNameFilter_TextChanged);
             // 
+            // doctorSelectorFilter
+            // 
+            this.doctorSelectorFilter.FormattingEnabled = true;
+            this.doctorSelectorFilter.Location = new System.Drawing.Point(3, 61);
+            this.doctorSelectorFilter.Name = "doctorSelectorFilter";
+            this.doctorSelectorFilter.Size = new System.Drawing.Size(244, 28);
+            this.doctorSelectorFilter.TabIndex = 2;
+            this.doctorSelectorFilter.SelectedIndexChanged += new System.EventHandler(this.DoctorSelectorFilter_SelectedIndexChanged);
+            // 
+            // lowerDateFilter
+            // 
+            this.lowerDateFilter.Location = new System.Drawing.Point(3, 95);
+            this.lowerDateFilter.Name = "lowerDateFilter";
+            this.lowerDateFilter.Size = new System.Drawing.Size(250, 27);
+            this.lowerDateFilter.TabIndex = 3;
+            this.lowerDateFilter.ValueChanged += new System.EventHandler(this.LowerDateFilter_ValueChanged);
+            // 
+            // upperDateFilter
+            // 
+            this.upperDateFilter.Location = new System.Drawing.Point(3, 128);
+            this.upperDateFilter.Name = "upperDateFilter";
+            this.upperDateFilter.Size = new System.Drawing.Size(250, 27);
+            this.upperDateFilter.TabIndex = 4;
+            this.upperDateFilter.ValueChanged += new System.EventHandler(this.UpperDateFilter_ValueChanged);
+            // 
             // listView1
             // 
             this.listView1.Alignment = System.Windows.Forms.ListViewAlignment.Left;
             this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listView1.FullRowSelect = true;
             this.listView1.Location = new System.Drawing.Point(3, 204);
+            this.listView1.MultiSelect = false;
             this.listView1.Name = "listView1";
+            this.listView1.OwnerDraw = true;
             this.listView1.Size = new System.Drawing.Size(250, 262);
             this.listView1.TabIndex = 0;
+            this.listView1.TileSize = new System.Drawing.Size(268, 50);
             this.listView1.UseCompatibleStateImageBehavior = false;
+            this.listView1.View = System.Windows.Forms.View.Tile;
             this.listView1.SelectedIndexChanged += new System.EventHandler(this.ListView1_SelectedIndexChanged);
             // 
             // buttonLogout
@@ -144,6 +177,9 @@ partial class MainWindow {
             // 
             // mainPanel
             // 
+            this.mainPanel.Controls.Add(this.buttonDeleteAppointment);
+            this.mainPanel.Controls.Add(this.buttonEditAppointment);
+            this.mainPanel.Controls.Add(this.buttonCreatePatient);
             this.mainPanel.Controls.Add(this.buttonCreateAppointment);
             this.mainPanel.Controls.Add(this.userGreetingLabel);
             this.mainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -152,14 +188,45 @@ partial class MainWindow {
             this.mainPanel.Size = new System.Drawing.Size(817, 487);
             this.mainPanel.TabIndex = 6;
             // 
+            // buttonDeleteAppointment
+            // 
+            this.buttonDeleteAppointment.Location = new System.Drawing.Point(12, 201);
+            this.buttonDeleteAppointment.Name = "buttonDeleteAppointment";
+            this.buttonDeleteAppointment.Size = new System.Drawing.Size(200, 30);
+            this.buttonDeleteAppointment.TabIndex = 4;
+            this.buttonDeleteAppointment.Text = "Delete Appointment";
+            this.buttonDeleteAppointment.UseVisualStyleBackColor = true;
+            this.buttonDeleteAppointment.Click += new System.EventHandler(this.ButtonDeleteAppointment_Click);
+            // 
+            // buttonEditAppointment
+            // 
+            this.buttonEditAppointment.Location = new System.Drawing.Point(12, 165);
+            this.buttonEditAppointment.Name = "buttonEditAppointment";
+            this.buttonEditAppointment.Size = new System.Drawing.Size(200, 30);
+            this.buttonEditAppointment.TabIndex = 3;
+            this.buttonEditAppointment.Text = "Edit Appointment";
+            this.buttonEditAppointment.UseVisualStyleBackColor = true;
+            this.buttonEditAppointment.Click += new System.EventHandler(this.ButtonEditAppointment_Click);
+            // 
+            // buttonCreatePatient
+            // 
+            this.buttonCreatePatient.Location = new System.Drawing.Point(12, 75);
+            this.buttonCreatePatient.Name = "buttonCreatePatient";
+            this.buttonCreatePatient.Size = new System.Drawing.Size(200, 30);
+            this.buttonCreatePatient.TabIndex = 2;
+            this.buttonCreatePatient.Text = "Register New Patient";
+            this.buttonCreatePatient.UseVisualStyleBackColor = true;
+            this.buttonCreatePatient.Click += new System.EventHandler(this.ButtonCreatePatient_Click);
+            // 
             // buttonCreateAppointment
             // 
-            this.buttonCreateAppointment.Location = new System.Drawing.Point(12, 83);
+            this.buttonCreateAppointment.Location = new System.Drawing.Point(12, 129);
             this.buttonCreateAppointment.Name = "buttonCreateAppointment";
             this.buttonCreateAppointment.Size = new System.Drawing.Size(200, 30);
             this.buttonCreateAppointment.TabIndex = 1;
             this.buttonCreateAppointment.Text = "Create Appointment";
             this.buttonCreateAppointment.UseVisualStyleBackColor = true;
+            this.buttonCreateAppointment.Click += new System.EventHandler(this.buttonCreateAppointment_Click);
             // 
             // userGreetingLabel
             // 
@@ -169,28 +236,6 @@ partial class MainWindow {
             this.userGreetingLabel.Size = new System.Drawing.Size(87, 20);
             this.userGreetingLabel.TabIndex = 0;
             this.userGreetingLabel.Text = "Hello Mr. X!";
-            // 
-            // doctorSelectorFilter
-            // 
-            this.doctorSelectorFilter.FormattingEnabled = true;
-            this.doctorSelectorFilter.Location = new System.Drawing.Point(3, 61);
-            this.doctorSelectorFilter.Name = "doctorSelectorFilter";
-            this.doctorSelectorFilter.Size = new System.Drawing.Size(244, 28);
-            this.doctorSelectorFilter.TabIndex = 2;
-            // 
-            // lowerDateFilter
-            // 
-            this.lowerDateFilter.Location = new System.Drawing.Point(3, 102);
-            this.lowerDateFilter.Name = "lowerDateFilter";
-            this.lowerDateFilter.Size = new System.Drawing.Size(250, 27);
-            this.lowerDateFilter.TabIndex = 3;
-            // 
-            // upperDateFilter
-            // 
-            this.upperDateFilter.Location = new System.Drawing.Point(3, 142);
-            this.upperDateFilter.Name = "upperDateFilter";
-            this.upperDateFilter.Size = new System.Drawing.Size(250, 27);
-            this.upperDateFilter.TabIndex = 4;
             // 
             // MainWindow
             // 
@@ -203,7 +248,7 @@ partial class MainWindow {
             this.Controls.Add(this.labelFooter);
             this.Controls.Add(this.appointmentsPanel);
             this.Name = "MainWindow";
-            this.Text = "MainWindow";
+            this.Text = "Normslabs - Clinic Management System v0.3.5";
             this.appointmentsPanel.ResumeLayout(false);
             this.filtersPanel.ResumeLayout(false);
             this.filtersPanel.PerformLayout();
@@ -230,4 +275,7 @@ partial class MainWindow {
     private ComboBox doctorSelectorFilter;
     private DateTimePicker lowerDateFilter;
     private DateTimePicker upperDateFilter;
+    private Button buttonDeleteAppointment;
+    private Button buttonEditAppointment;
+    private Button buttonCreatePatient;
 }

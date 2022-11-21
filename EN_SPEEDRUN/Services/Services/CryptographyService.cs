@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace EN_SPEEDRUN.Services.Services;
 public class CryptographyService {
-    private const int _saltSize = 16; // 128 bits
-    private const int _keySize = 32; // 256 bits
-    private const int _iterations = 100000;
-    private const char _segmentDelimiter = ':';
-    private static readonly HashAlgorithmName _algorithm = HashAlgorithmName.SHA256;
+    private const int SALT_SIZE = 16; // 128 bits
+    private const int KEY_SIZE = 32; // 256 bits
+    private const int ITERATIONS = 100000;
+    private const char SEGMENT_DELIMITER = ':';
+    private static readonly HashAlgorithmName ALGORITHM = HashAlgorithmName.SHA256;
 
-    private static CryptographyService INSTANCE;
+    private static CryptographyService INSTANCE = null!;
 
     private CryptographyService() { }
 
@@ -24,7 +24,7 @@ public class CryptographyService {
     }
 
     public bool ValidatePassword(string passwordToTest, string hash) {
-        string[] segments = hash.Split(_segmentDelimiter);
+        string[] segments = hash.Split(SEGMENT_DELIMITER);
         byte[] key = Convert.FromHexString(segments[0]);
         byte[] salt = Convert.FromHexString(segments[1]);
         int iterations = int.Parse(segments[2]);
@@ -41,20 +41,20 @@ public class CryptographyService {
 
 
     public string HashPassword(string clearPassword) {
-        byte[] salt = RandomNumberGenerator.GetBytes(_saltSize);
+        byte[] salt = RandomNumberGenerator.GetBytes(SALT_SIZE);
         byte[] key = Rfc2898DeriveBytes.Pbkdf2(
             clearPassword,
             salt,
-            _iterations,
-            _algorithm,
-            _keySize
+            ITERATIONS,
+            ALGORITHM,
+            KEY_SIZE
         );
         return string.Join(
-            _segmentDelimiter,
+            SEGMENT_DELIMITER,
             Convert.ToHexString(key),
             Convert.ToHexString(salt),
-            _iterations,
-            _algorithm
+            ITERATIONS,
+            ALGORITHM
         );
     }
 }

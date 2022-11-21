@@ -26,6 +26,11 @@ public class PatientDTO : IDTO {
     [StringLength(48)]
     public string LastName { get; set; }
 
+    [NotMapped]
+    public string DisplayName { 
+        get { return this.FirstName + " " + this.LastName; } 
+    }
+
     [Required]
     [StringLength(12)]
     public string HealthCardNumber { get; set; }
@@ -35,10 +40,10 @@ public class PatientDTO : IDTO {
 
 
     [ForeignKey("StatusId")]
-    public StatusDTO Status { get; set; }
+    public StatusDTO Status { get; set; } = null!;
 
 
-    public List<AppointmentDTO> Appointments { get; set; }
+    public List<AppointmentDTO> Appointments { get; set; } = null!;
 
 
 

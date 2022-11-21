@@ -11,5 +11,4 @@ public class AddressDAO : AbstractDAO<AddressDTO> {
 
     public AddressDAO(IContext<AddressDTO> context) : base(context) { }
 
-    // Magic!
 }

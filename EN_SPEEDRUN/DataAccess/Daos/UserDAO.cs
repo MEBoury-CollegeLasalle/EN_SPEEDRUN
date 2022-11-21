@@ -1,5 +1,8 @@
 ﻿using EN_SPEEDRUN.DataAccess.Dtos;
+using EN_SPEEDRUN.Services.Services;
 using EN_SPEEDRUN.Utils.Exceptions;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic.ApplicationServices;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,7 +17,9 @@ public class UserDAO : AbstractDAO<UserDTO> {
 
     public UserDTO GetByUsername(string username) {
         try {
-            return this.GetContext().GetDbSet().Where(user => user.Username == username).Single();
+            return this.GetContext().GetDbSet()
+                .Where(user => user.Username == username)
+                .Single();
         } catch (Exception ex) {
             throw new UserNotFoundException($"User [{username}] not found.", username, ex);
         }

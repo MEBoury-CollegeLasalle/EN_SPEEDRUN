@@ -1,24 +1,31 @@
-﻿using System;
+﻿using EN_SPEEDRUN.DataAccess;
+using EN_SPEEDRUN.DataAccess.Daos;
+using EN_SPEEDRUN.DataAccess.Dtos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace EN_SPEEDRUN.Services.Services;
-public class PatientService {
+public class PatientService : AbstractDtoService<PatientDTO> {
 
-    private static PatientService INSTANCE;
+    public PatientService(IContext<PatientDTO> dbContext) : base(new PatientDAO(dbContext)) { }
 
-    private PatientService() {
-
+    protected PatientDAO GetPatientDao() {
+        return (PatientDAO) this.daoInstance;
     }
 
-    public static PatientService GetInstance() {
-        if (INSTANCE is null) {
-            INSTANCE = new PatientService();
-        }
-        return INSTANCE;
-    }
+    public PatientDTO CreateNewPatient(
+        string firstName,
+        string lastName,
+        string healthCardNumber,
+        StatusDTO status,
+        List<AppointmentDTO>? appointments = null) {
 
+        PatientDTO newPatient = new PatientDTO(firstName, lastName, healthCardNumber, status, appointments);
+        this.GetPatientDao().Save(newPatient);
+        return newPatient;
+    }
 
 }

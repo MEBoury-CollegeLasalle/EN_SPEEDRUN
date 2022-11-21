@@ -48,6 +48,14 @@ public class AppointmentTimeDTO : IDTO {
         return this.Id;
     }
 
+    /// <summary>
+    /// Returns the appointment time as a string in the format HH:MM
+    /// </summary>
+    /// <returns>the formatted string.</returns>
+    public override string ToString() {
+        return this.hours.ToString("D2") + ":" + this.Minutes.ToString("D2");
+    }
+
 
     /// <summary>
     /// Validates a <c>Hours</c> value for a <see cref="AppointmentTimeDTO.Hours"/> instance.

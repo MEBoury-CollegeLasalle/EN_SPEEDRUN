@@ -1,5 +1,4 @@
-﻿using EN_SPEEDRUN.DataAccess.Pivots;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -28,6 +27,11 @@ public class DoctorDTO : IDTO {
     [StringLength(48)]
     public string LastName { get; set; }
 
+    [NotMapped]
+    public string DisplayName {
+        get { return "Dr. " + this.FirstName + " " + this.LastName; }
+    }
+
     [Required]
     [StringLength(32)]
     public string LicenseNo { get; set; }
@@ -43,12 +47,12 @@ public class DoctorDTO : IDTO {
     // Navigation Properties
 
     [ForeignKey("StatusId")]
-    public StatusDTO Status { get; set; }
+    public StatusDTO Status { get; set; } = null!;
 
-    [ForeignKey("ClinicId")]
-    public List<ClinicDoctor> ClinicDoctors { get; set; }
 
-    public List<AppointmentDTO> Appointments { get; set; }
+    public List<ClinicDoctorDTO> ClinicDoctors { get; set; } = null!;
+
+    public List<AppointmentDTO> Appointments { get; set; } = null!;
 
 
 
@@ -67,7 +71,7 @@ public class DoctorDTO : IDTO {
         string licenseNo,
         StatusDTO status,
         DateTime dateHired, 
-        List<ClinicDoctor>? clinicDoctors = null, 
+        List<ClinicDoctorDTO>? clinicDoctors = null, 
         List<AppointmentDTO>? appointments = null) {
 
         this.FirstName = firstName;
@@ -76,7 +80,7 @@ public class DoctorDTO : IDTO {
         this.Status = status;
         this.StatusId = status.GetId();
         this.DateHired = dateHired;
-        this.ClinicDoctors = clinicDoctors ?? new List<ClinicDoctor>();
+        this.ClinicDoctors = clinicDoctors ?? new List<ClinicDoctorDTO>();
         this.Appointments = appointments ?? new List<AppointmentDTO>();
     }
 

@@ -9,10 +9,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace EN_SPEEDRUN.DataAccess.Contexts;
-public class LoginContext : DbContext, IContext<UserDTO> {
+public class LoginContext : DbContext, IContext<UserDTO>, IContext<StatusDTO> {
 
 
     public DbSet<UserDTO> Users { get; set; }
+
+    public DbSet<StatusDTO> Statuses { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
         optionsBuilder.UseSqlServer("Server=.\\SQL2019EXPRESS;Database=db_speedrun_en;Integrated security=true;TrustServerCertificate=true;");
@@ -20,5 +22,9 @@ public class LoginContext : DbContext, IContext<UserDTO> {
 
     DbSet<UserDTO> IContext<UserDTO>.GetDbSet() {
         return this.Users;
+    }
+
+    DbSet<StatusDTO> IContext<StatusDTO>.GetDbSet() {
+        return this.Statuses;
     }
 }

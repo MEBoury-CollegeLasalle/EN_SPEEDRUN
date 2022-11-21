@@ -1,5 +1,7 @@
 ﻿using EN_SPEEDRUN.DataAccess.Dtos;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.VisualBasic.ApplicationServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +21,8 @@ public class ClinicDAO : AbstractDAO<ClinicDTO> {
             .Include(clinic => clinic.Address)
             .Include(clinic => clinic.ClinicDoctors)
                 .ThenInclude(clinicDoctor => clinicDoctor.Doctor)
-            .Include(clinic => clinic.Appointments)
-                .ThenInclude(appointment => appointment.Patient)
-            .Include(clinic => clinic.Appointments)
-                .ThenInclude(appointment => appointment.AppointmentTime)
+                    .ThenInclude(doctor => doctor.Status)
             .Single();
     }
+
 }

@@ -21,6 +21,11 @@ public class StatusDTO : IDTO {
     }
 
 
+    public override string ToString() {
+        return this.StatusCode.ToString();
+    }
+
+
     public int GetId() {
         return this.Id;
     }

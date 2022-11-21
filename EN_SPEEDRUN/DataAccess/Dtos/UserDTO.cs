@@ -39,10 +39,10 @@ public class UserDTO : IDTO {
 
 
     [ForeignKey("ClinicId")]
-    public ClinicDTO Clinic { get; set; }
+    public ClinicDTO Clinic { get; set; } = null!;
 
     [ForeignKey("StatusId")]
-    public StatusDTO Status { get; set; }
+    public StatusDTO Status { get; set; } = null!;
 
 
 

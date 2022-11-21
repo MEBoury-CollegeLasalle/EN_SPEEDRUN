@@ -3,6 +3,7 @@ using EN_SPEEDRUN.Utils.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +20,8 @@ public class ClinicContext : DbContext,
     IContext<ClinicDTO>, 
     IContext<PatientDTO>, 
     IContext<DoctorDTO>, 
-    IContext<AppointmentDTO> {
+    IContext<AppointmentDTO>, 
+    IContext<ClinicDoctorDTO> {
 
 
     public DbSet<StatusDTO> Statuses { get; set; }
@@ -28,11 +30,13 @@ public class ClinicContext : DbContext,
     public DbSet<ClinicDTO> Clinics { get; set; }
     public DbSet<PatientDTO> Patients { get; set; }
     public DbSet<DoctorDTO> Doctors { get; set; }
+    public DbSet<ClinicDoctorDTO> ClinicDoctors { get; set; }
     public DbSet<AppointmentDTO> Appointments { get; set; }
 
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
         optionsBuilder.UseSqlServer(@"Server=.\SQL2019EXPRESS;Database=db_speedrun_en;Integrated security=true;TrustServerCertificate=true;");
+        optionsBuilder.LogTo(Console.WriteLine);
     }
 
 
@@ -62,5 +66,9 @@ public class ClinicContext : DbContext,
 
     DbSet<AppointmentDTO> IContext<AppointmentDTO>.GetDbSet() {
         return this.Appointments;
+    }
+
+    DbSet<ClinicDoctorDTO> IContext<ClinicDoctorDTO>.GetDbSet() {
+        throw new NotImplementedException();
     }
 }

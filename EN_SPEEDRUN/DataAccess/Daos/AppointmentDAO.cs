@@ -29,8 +29,10 @@ public class AppointmentDAO : AbstractDAO<AppointmentDTO> {
             DateTime? beforeDate = null) {
 
         return this.GetContext().GetDbSet()
+            .Include(appointment => appointment.Clinic)
             .Include(appointment => appointment.Patient)
             .Include(appointment => appointment.Doctor)
+            .Include(appointment => appointment.AppointmentTime)
             .AsEnumerable()
             .Where(appointment => {
 
@@ -53,7 +55,7 @@ public class AppointmentDAO : AbstractDAO<AppointmentDTO> {
 
                 // Doctor selection criterion
                 if (doctorCriterion is not null && appointment.Doctor.Id != doctorCriterion.Id) {
-                    // doctor criterion is set and doesnt match the appointment's doctor.
+                    // Doctor criterion is set and doesnt match the appointment's Doctor.
                     // reject this appointment
                     return false;
                 }

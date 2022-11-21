@@ -31,7 +31,7 @@ public abstract class AbstractDAO<TDTO> : IDAO<TDTO> where TDTO : class, IDTO {
     }
 
     public TDTO GetById(int id) {
-        return this.context.GetDbSet().Where(dto => dto.GetId() == id).Single();
+        return this.context.GetDbSet().AsEnumerable().Where(dto => dto.GetId() == id).Single();
     }
 
     public void LoadAllInContext(IContext<TDTO> context) {
@@ -47,5 +47,13 @@ public abstract class AbstractDAO<TDTO> : IDAO<TDTO> where TDTO : class, IDTO {
     public void Save(TDTO dto) {
         this.context.GetDbSet().Add(dto);
         this.context.SaveChanges();
+    }
+
+    public List<TDTO> GetWhere(Func<TDTO, bool> predicate) {
+        return this.context.GetDbSet().Where(predicate).ToList();
+    }
+
+    public TDTO GetSingleWhere(Func<TDTO, bool> predicate) {
+        return this.context.GetDbSet().Where(predicate).Single();
     }
 }

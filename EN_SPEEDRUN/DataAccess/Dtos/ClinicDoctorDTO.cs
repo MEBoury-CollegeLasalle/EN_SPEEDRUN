@@ -1,5 +1,4 @@
-﻿using EN_SPEEDRUN.DataAccess.Dtos;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,11 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EN_SPEEDRUN.DataAccess.Pivots;
+namespace EN_SPEEDRUN.DataAccess.Dtos;
 
 [Table("ClinicDoctors")]
 [Index("DoctorId", "ClinicId", IsUnique = true, Name = "UNIQ_ClinicDoctors_ClinicId_DoctorId")]
-public class ClinicDoctor : IPivot {
+public class ClinicDoctorDTO : IPivot, IDTO {
 
     [Key]
     public int Id { get; set; }
@@ -26,8 +25,19 @@ public class ClinicDoctor : IPivot {
     // Navigation properties
 
     [ForeignKey("DoctorId")]
-    public DoctorDTO Doctor { get; set; }
+    public DoctorDTO Doctor { get; set; } = null!;
 
     [ForeignKey("ClinicId")]
-    public ClinicDTO Clinic { get; set; }
+    public ClinicDTO Clinic { get; set; } = null!;
+
+
+    public ClinicDoctorDTO(int doctorId, int clinicId) {
+        this.DoctorId = doctorId;
+        this.ClinicId = clinicId;
+    }
+
+
+    public int GetId() {
+        return this.Id;
+    }
 }

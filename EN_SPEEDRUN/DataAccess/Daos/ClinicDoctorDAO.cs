@@ -1,5 +1,4 @@
 ﻿using EN_SPEEDRUN.DataAccess.Dtos;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace EN_SPEEDRUN.DataAccess.Daos;
-public class PatientDAO : AbstractDAO<PatientDTO> {
+public class ClinicDoctorDAO : AbstractDAO<ClinicDoctorDTO> {
+    public ClinicDoctorDAO(IContext<ClinicDoctorDTO> context) : base(context) { }
 
-    public PatientDAO(IContext<PatientDTO> context) : base(context) { }
 
 }
