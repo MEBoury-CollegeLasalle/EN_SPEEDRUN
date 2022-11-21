@@ -12,6 +12,7 @@ public class MainService {
     private static MainService? INSTANCE;
 
     private ILoginService loginService;
+    private ClinicContext clinicContext;
     private ClinicService? clinicService;
 
     private MainService() {
@@ -29,8 +30,8 @@ public class MainService {
 
 
     public void InitMainServiceAfterLogin() {
-        ClinicContext context = new ClinicContext();
-        this.clinicService = new ClinicService(context);
+        this.clinicContext = new ClinicContext();
+        this.clinicService = new ClinicService(this.clinicContext);
     }
 
 
@@ -38,7 +39,7 @@ public class MainService {
         return this.loginService;
     }
 
-    public ClinicService GetClinicService() {
+    public ClinicService? GetClinicService() {
         // TODO: require login
         return this.clinicService;
     }

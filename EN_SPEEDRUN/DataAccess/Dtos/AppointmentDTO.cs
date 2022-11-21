@@ -4,8 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Net.NetworkInformation;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace EN_SPEEDRUN.DataAccess.Dtos;
 
@@ -59,6 +61,21 @@ public class AppointmentDTO : IDTO {
 
     #endregion
 
+
+    public AppointmentDTO(DateTime date, 
+        int statusId, 
+        int patientId, 
+        int doctorId,
+        int clinicId,
+        int appointmentTimeId) {
+
+        this.Date = date;
+        this.StatusId = statusId;
+        this.PatientId = patientId;
+        this.DoctorId = doctorId;
+        this.ClinicId = clinicId;
+        this.AppointmentTimeId = appointmentTimeId;
+    }
 
     public AppointmentDTO(
         DateTime date, 

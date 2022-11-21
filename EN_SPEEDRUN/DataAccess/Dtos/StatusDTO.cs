@@ -16,8 +16,8 @@ public class StatusDTO : IDTO {
     public Statuses StatusCode { get; set; }
 
 
-    public StatusDTO(Statuses status) { 
-        this.StatusCode = status;
+    public StatusDTO(Statuses statusCode) { 
+        this.StatusCode = statusCode;
     }
 
 

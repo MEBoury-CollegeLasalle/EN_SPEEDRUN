@@ -6,6 +6,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace EN_SPEEDRUN.DataAccess.Dtos;
 
@@ -44,6 +46,13 @@ public class UserDTO : IDTO {
 
 
 
+    public UserDTO(int statusId, string username, string passwordHash, int clinicId) {
+        this.StatusId = statusId;
+        this.Username = username;
+        this.PasswordHash = passwordHash;
+        this.ClinicId = clinicId;
+
+    }
 
     public UserDTO(string username, string passwordHash, StatusDTO status, ClinicDTO clinic) {
         this.Username = username;

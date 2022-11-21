@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace EN_SPEEDRUN.DataAccess.Dtos;
 
@@ -40,6 +41,15 @@ public class PatientDTO : IDTO {
     public List<AppointmentDTO> Appointments { get; set; }
 
 
+
+
+    public PatientDTO(int statusId, string firstName, string lastName, string healthCardNumber) {
+
+        this.StatusId = statusId;
+        this.FirstName = firstName;
+        this.LastName = lastName;
+        this.HealthCardNumber = healthCardNumber;
+    }
 
     public PatientDTO(
         string firstName, 

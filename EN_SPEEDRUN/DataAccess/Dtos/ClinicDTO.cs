@@ -1,9 +1,11 @@
 ﻿using EN_SPEEDRUN.DataAccess.Pivots;
+using Microsoft.VisualBasic.ApplicationServices;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -42,6 +44,11 @@ public class ClinicDTO : IDTO {
     public List<UserDTO> Users { get; set; }
 
 
+
+    public ClinicDTO(string name, int addressId) {
+        this.Name = name;
+        this.AddressId = addressId;
+    }
 
     public ClinicDTO(
         string name, 

@@ -48,11 +48,18 @@ public class LoginService : ILoginService {
                 if (this.cryptographyService.ValidatePassword(password, user.PasswordHash)) {
                     userDao.UpdateUserLastLogin(user);
                     this.loggedInUser = user;
+                    MainService.GetInstance().InitMainServiceAfterLogin();
 
                 } else {
                     throw new InvalidPasswordException("Invalid password");
                 }
             } catch (UserNotFoundException unfe) {
+                Debug.WriteLine(unfe.Message);
+                Debug.WriteLine(unfe.StackTrace);
+                if (unfe.InnerException is not null) {
+                    Debug.WriteLine(unfe.InnerException.Message);
+                    Debug.WriteLine(unfe.InnerException.StackTrace);
+                }
                 throw new UserNotFoundException("Invalid username", null, unfe);
             }
 
