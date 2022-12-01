@@ -51,11 +51,11 @@ public class AddressDTO : IDTO {
     public AddressDTO(
         int streetNumber, 
         string street, 
-        string streetExtension, 
         string city, 
         string region, 
         string country, 
-        string postalCode) { 
+        string postalCode,
+        string? streetExtension = null) { 
 
         // TODO: validation methods?
         this.StreetNumber = streetNumber;

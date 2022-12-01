@@ -23,6 +23,7 @@ public abstract class AbstractDtoService<TDTO> : IDtoService<TDTO> where TDTO : 
         return this.daoInstance.GetById(id);
     }
 
+    
     public TDTO GetSingleWhere(Func<TDTO, bool> predicate) {
         return this.daoInstance.GetSingleWhere(predicate);
     }

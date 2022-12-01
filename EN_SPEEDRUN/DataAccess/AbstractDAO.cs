@@ -1,4 +1,6 @@
-﻿using System;
+﻿using EN_SPEEDRUN.Services.Services;
+using EN_SPEEDRUN.Utils.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +12,8 @@ public abstract class AbstractDAO<TDTO> : IDAO<TDTO> where TDTO : class, IDTO {
     protected IContext<TDTO> context;
 
     protected AbstractDAO(IContext<TDTO> context) {
-        this.context = context;
+        // TODO: finish exception message
+        this.context = context ?? throw new InvalidNullArgumentException("whatever...", "context", "AbstractDAO");
     }
 
     public void Delete(TDTO dto) {
